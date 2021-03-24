@@ -45,18 +45,15 @@ class FileAsync extends Base {
   }
 
   async write(data) {
-    return writeFile(this.source, JSON.stringify(data))
-      .then()
-      .then(() => this.defaultValue)
-      .catch(async (e) => {
-        return writeFile(
-          this.source,
-          await bfj.stringify(data, {
-            replace: null,
-            space: 2,
-          })
-        )
-      })
+    return writeFile(this.source, JSON.stringify(data)).catch(async (e) => {
+      return writeFile(
+        this.source,
+        await bfj.stringify(data, {
+          replace: null,
+          space: 2,
+        })
+      )
+    })
   }
 }
 
