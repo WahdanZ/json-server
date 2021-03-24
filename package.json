@@ -1,6 +1,6 @@
 {
   "name": "mock-json-server-copy",
-  "version": "0.16.4",
+  "version": "0.16.5",
   "description": "Get a full fake REST API with zero coding in less than 30 seconds",
   "main": "./lib/server/index.js",
   "bin": "./lib/cli/bin.js",
