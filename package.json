@@ -9,7 +9,7 @@
     "public"
   ],
   "scripts": {
-    "postinstall": "husky install",
+    "_postinstall": "husky install",
     "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
     "start": "babel-node -- src/cli/bin db.json -r routes.json",
     "lint": "eslint . --ignore-path .gitignore",
