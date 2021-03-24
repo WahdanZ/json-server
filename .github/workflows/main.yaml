@@ -20,29 +20,29 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
-#   test:
-#     strategy:
-#       matrix:
-#         platform: [ubuntu-latest]
-#         node: [ '10', '12' ]
-#     name: Node ${{ matrix.node }} (${{ matrix.platform }})
-#     runs-on: ${{ matrix.platform }}
-#     steps:
-#       - uses: actions/checkout@v1
-#       - uses: actions/setup-node@v1
-#         with:
-#           node-version: ${{ matrix.node }}
-#       - name: install dependencies
-#         run: npm i
-#       - name: run tests
-#         run: npm test
-#   test_latest:
-#     runs-on: ubuntu-latest
-#     container: node:latest
-#     name: Node latest (ubuntu-latest)
-#     steps:
-#       - uses: actions/checkout@v1
-#       - name: install dependencies
-#         run: npm i
-#       - name: run tests
-#         run: npm test
+  test:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest]
+        node: [ '10', '12' ]
+    name: Node ${{ matrix.node }} (${{ matrix.platform }})
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: install dependencies
+        run: npm i
+      - name: run tests
+        run: npm test
+  test_latest:
+    runs-on: ubuntu-latest
+    container: node:latest
+    name: Node latest (ubuntu-latest)
+    steps:
+      - uses: actions/checkout@v1
+      - name: install dependencies
+        run: npm i
+      - name: run tests
+        run: npm test
