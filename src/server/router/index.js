@@ -12,11 +12,11 @@ const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
 
-module.exports = (db, opts) => {
+module.exports = async (db, opts) => {
   opts = Object.assign({ foreignKeySuffix: 'Id', _isFake: false }, opts)
 
   if (typeof db === 'string') {
-    db = low(new FileSync(db))
+    db = await low(new FileSync(db))
   } else if (!_.has(db, '__chain__') || !_.has(db, '__wrapped__')) {
     db = low(new Memory()).setState(db)
   }
@@ -70,8 +70,8 @@ module.exports = (db, opts) => {
     // }
 
     const msg =
-      `Type of "${key}" (${typeof value}) ${sourceMessage} is not supported. ` +
-      `Use objects or arrays of objects.`
+        `Type of "${key}" (${typeof value}) ${sourceMessage} is not supported. ` +
+        `Use objects or arrays of objects.`
 
     throw new Error(msg)
   }).value()
