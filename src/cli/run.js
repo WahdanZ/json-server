@@ -8,6 +8,7 @@ const pause = require('connect-pause')
 const is = require('./utils/is')
 const load = require('./utils/load')
 const jsonServer = require('../server')
+const bfj = require('bfj');
 
 function prettyPrint(argv, object, rules) {
   const root = `http://${argv.host}:${argv.port}`
@@ -164,12 +165,15 @@ module.exports = function (argv) {
         console.log(`  Creating a snapshot from the CLI won't be possible`)
       })
       process.stdin.setEncoding('utf8')
-      process.stdin.on('data', (chunk) => {
+      process.stdin.on('data', async (chunk) => {
         if (chunk.trim().toLowerCase() === 's') {
           const filename = `db-${Date.now()}.json`
           const file = path.join(argv.snapshots, filename)
           const state = app.db.getState()
-          fs.writeFileSync(file, JSON.stringify(state, null, 2), 'utf-8')
+          fs.writeFileSync(file, await bfj.stringify(state, {
+            replace: null,
+            space: 2
+          }), 'utf-8')
           console.log(
             `  Saved snapshot to ${path.relative(process.cwd(), file)}\n`
           )
