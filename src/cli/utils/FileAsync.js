@@ -4,6 +4,7 @@ const fs = require('graceful-fs')
 const pify = require('pify')
 const steno = require('steno')
 const Base = require('lowdb/adapters/Base')
+const bfj = require('bfj')
 
 const readFile = pify(fs.readFile)
 const writeFile = pify(steno.writeFile)
@@ -27,14 +28,20 @@ class FileAsync extends Base {
         })
     } else {
       // Initialize
-      return writeFile(this.source, await this.serialize(this.defaultValue))
+      return writeFile(
+        this.source,
+        await bfj.stringify(this.defaultValue, { replace: null, space: 2 })
+      )
         .then()
         .then(() => this.defaultValue)
     }
   }
 
   async write(data) {
-    return writeFile(this.source, await this.serialize(data))
+    return writeFile(
+      this.source,
+      await bfj.stringify(data, { replace: null, space: 2 })
+    )
   }
 }
 
