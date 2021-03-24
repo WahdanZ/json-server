@@ -1,5 +1,5 @@
 {
-  "name": "json-server",
+  "name": "json-server-c",
   "version": "0.16.3",
   "description": "Get a full fake REST API with zero coding in less than 30 seconds",
   "main": "./lib/server/index.js",
@@ -9,7 +9,7 @@
     "public"
   ],
   "scripts": {
-    "postinstall": "husky install",
+    "_postinstall": "husky install",
     "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
     "start": "babel-node -- src/cli/bin db.json -r routes.json",
     "lint": "eslint . --ignore-path .gitignore",
@@ -73,7 +73,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/typicode/json-server.git"
+    "url": "git://github.com/WahdanZ/json-server.git"
   },
   "keywords": [
     "JSON",
