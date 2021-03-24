@@ -3,7 +3,7 @@ const path = require('path')
 const http = require('http')
 const https = require('https')
 const low = require('lowdb')
-const FileAsync = require('lowdb/adapters/FileAsync')
+const FileAsync = require('./FileAsync')
 const Memory = require('lowdb/adapters/Memory')
 const is = require('./is')
 const chalk = require('chalk')
@@ -29,8 +29,7 @@ module.exports = function (source) {
           await bfj.stringify(example, { replace: null, space: 2 })
         )
       }
-
-      resolve(low(new FileAsync(source)))
+      resolve(await low(new FileAsync(source)))
     } else if (is.URL(source)) {
       // Normalize the source into a URL object.
       const sourceUrl = new URL(source)
