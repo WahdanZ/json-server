@@ -28,20 +28,20 @@ class FileAsync extends Base {
         })
     } else {
       // Initialize
-      return writeFile(
-        this.source,
-        await bfj.stringify(this.defaultValue, { replace: null, space: 2 })
-      )
+      bfj
+        .stringify(this.defaultValue, { replace: null, space: 2 })
+        .then((data) => {
+          return writeFile(this.source, data)
+        })
         .then()
         .then(() => this.defaultValue)
     }
   }
 
   async write(data) {
-    return writeFile(
-      this.source,
-      await bfj.stringify(data, { replace: null, space: 2 })
-    )
+    return bfj.stringify(data, { replace: null, space: 2 }).then((data) => {
+      return writeFile(this.source, data)
+    })
   }
 }
 
