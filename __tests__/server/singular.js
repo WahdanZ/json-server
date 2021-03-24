@@ -6,7 +6,7 @@ describe('Server', () => {
   let router
   let db
 
-  beforeEach(() => {
+  beforeEach(async () => {
     db = {}
 
     db.user = {
@@ -15,7 +15,7 @@ describe('Server', () => {
     }
 
     server = jsonServer.create()
-    router = jsonServer.router(db)
+    router = await jsonServer.router(db)
     server.use(jsonServer.defaults())
     server.use(router)
   })

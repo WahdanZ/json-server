@@ -8,7 +8,7 @@ describe('Server with custom foreign key', () => {
   let router
   let db
 
-  beforeEach(() => {
+  beforeEach(async () => {
     db = {}
 
     db.posts = [
@@ -23,7 +23,7 @@ describe('Server with custom foreign key', () => {
     ]
 
     server = jsonServer.create()
-    router = jsonServer.router(db, { foreignKeySuffix: '_id' })
+    router = await jsonServer.router(db, { foreignKeySuffix: '_id' })
     server.use(jsonServer.defaults())
     server.use(router)
   })

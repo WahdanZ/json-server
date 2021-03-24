@@ -33,12 +33,12 @@ function prettyPrint(argv, object, rules) {
   console.log()
 }
 
-function createApp(db, routes, middlewares, argv) {
+async function createApp(db, routes, middlewares, argv) {
   const app = jsonServer.create()
 
   const { foreignKeySuffix } = argv
 
-  const router = jsonServer.router(
+  const router = await jsonServer.router(
     db,
     foreignKeySuffix ? { foreignKeySuffix } : undefined
   )
@@ -104,7 +104,7 @@ module.exports = function (argv) {
     server = undefined
 
     // create db and load object, JSON file, JS or HTTP database
-    return load(source).then((db) => {
+    return load(source).then(async (db) => {
       // Load additional routes
       let routes
       if (argv.routes) {
@@ -125,7 +125,7 @@ module.exports = function (argv) {
       console.log(chalk.gray('  Done'))
 
       // Create app and server
-      app = createApp(db, routes, middlewares, argv)
+      app = await createApp(db, routes, middlewares, argv)
       server = app.listen(argv.port, argv.host)
 
       // Enhance with a destroy function

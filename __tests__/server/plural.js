@@ -15,7 +15,7 @@ describe('Server', () => {
     '/articles\\?_id=:id': '/posts/:id',
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     db = {}
 
     db.posts = [
@@ -87,7 +87,7 @@ describe('Server', () => {
     ]
 
     server = jsonServer.create()
-    router = jsonServer.router(db)
+    router = await jsonServer.router(db)
     server.use(jsonServer.defaults())
     server.use(jsonServer.rewriter(rewriterRules))
     server.use(router)
