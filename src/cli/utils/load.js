@@ -7,6 +7,7 @@ const FileAsync = require('lowdb/adapters/FileAsync')
 const Memory = require('lowdb/adapters/Memory')
 const is = require('./is')
 const chalk = require('chalk')
+const bfj = require('bfj')
 
 const example = {
   posts: [{ id: 1, title: 'json-server', author: 'typicode' }],
@@ -15,13 +16,18 @@ const example = {
 }
 
 module.exports = function (source) {
-  return new Promise((resolve, reject) => {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve, reject) => {
     if (is.FILE(source)) {
       if (!fs.existsSync(source)) {
         console.log(chalk.yellow(`  Oops, ${source} doesn't seem to exist`))
         console.log(chalk.yellow(`  Creating ${source} with some default data`))
         console.log()
-        fs.writeFileSync(source, JSON.stringify(example, null, 2))
+
+        fs.writeFileSync(
+          source,
+          await bfj.stringify(example, { replace: null, space: 2 })
+        )
       }
 
       resolve(low(new FileAsync(source)))
@@ -38,7 +44,7 @@ module.exports = function (source) {
             dbData += data
           })
 
-          res.on('end', () => {
+          res.on('end', async () => {
             resolve(low(new Memory()).setState(JSON.parse(dbData)))
           })
         })
