@@ -28,10 +28,16 @@ class FileAsync extends Base {
         })
     } else {
       // Initialize
-      bfj
-        .stringify(this.defaultValue, { replace: null, space: 2 })
-        .then((data) => {
-          return writeFile(this.source, data)
+
+      return writeFile(this.source, JSON.stringify(this.defaultValue))
+        .catch(async (e) => {
+          return writeFile(
+            this.source,
+            await bfj.stringify(this.defaultValue, {
+              replace: null,
+              space: 2,
+            })
+          )
         })
         .then()
         .then(() => this.defaultValue)
@@ -39,9 +45,18 @@ class FileAsync extends Base {
   }
 
   async write(data) {
-    return bfj.stringify(data, { replace: null, space: 2 }).then((data) => {
-      return writeFile(this.source, data)
-    })
+    return writeFile(this.source, JSON.stringify(data))
+      .then()
+      .then(() => this.defaultValue)
+      .catch(async (e) => {
+        return writeFile(
+          this.source,
+          await bfj.stringify(data, {
+            replace: null,
+            space: 2,
+          })
+        )
+      })
   }
 }
 
