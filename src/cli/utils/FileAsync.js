@@ -1,9 +1,15 @@
+'use strict'
+
 // Not using async/await on purpose to avoid adding regenerator-runtime
 // to lowdb dependencies
 const fs = require('graceful-fs')
+
 const pify = require('pify')
+
 const steno = require('steno')
+
 const Base = require('lowdb/adapters/Base')
+
 const bfj = require('bfj')
 
 const readFile = pify(fs.readFile)
@@ -24,36 +30,27 @@ class FileAsync extends Base {
           if (e instanceof SyntaxError) {
             e.message = `Malformed JSON in file: ${this.source}\n${e.message}`
           }
+
           throw e
         })
     } else {
       // Initialize
 
-      return writeFile(this.source, JSON.stringify(this.defaultValue))
-        .catch(async (e) => {
-          return writeFile(
-            this.source,
-            await bfj.stringify(this.defaultValue, {
-              replace: null,
-              space: 2,
-            })
-          )
-        })
+      return this.write(this.defaultValue)
         .then()
         .then(() => this.defaultValue)
     }
   }
 
   async write(data) {
-    return writeFile(this.source, JSON.stringify(data)).catch(async (e) => {
-      return writeFile(
-        this.source,
-        await bfj.stringify(data, {
-          replace: null,
-          space: 2,
-        })
-      )
-    })
+    try {
+      return writeFile(this.source, JSON.stringify(data))
+    } catch (e) {
+      console.log(`using bfs stringify`)
+      return bfj.stringify(data, {}).then((json) => {
+        return writeFile(this.source, json)
+      })
+    }
   }
 }
 
