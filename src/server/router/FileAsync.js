@@ -47,8 +47,9 @@ class FileAsync extends Base {
       return writeFile(this.source, JSON.stringify(data))
     } catch (e) {
       console.log(`using bfs stringify`)
-      return bfj.stringify(data, {}).then((json) => {
-        return writeFile(this.source, json)
+      return bfj.stringify(data, {}).then(async (json) => {
+        console.log(`write file using  stringify`)
+        return await writeFile(this.source, json)
       })
     }
   }
